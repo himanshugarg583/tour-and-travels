@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tour-list</title>
+    <!-- Stylesheets -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/travel/css/flaticon.css">
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="css/responsive.css" rel="stylesheet">
+
+    <!-- font awasome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- <script src="https://cdn.tailwindcss.com"> -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> -->
+<!-- tailwind -->
+<script src="https://cdn.tailwindcss.com">
+  </script>
+
+
+<style>
+    .fas {
+  font-size: 24px;
+  color: #4caf50;
+  margin-right: 10px;
+}
+
+
+.booking-container:hover{
+        /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+        /* box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
+        box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+
+
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <!-- Preloader -->
+        <div class="loader-wrap">
+            <div class="preloader">
+                <div class="preloader-close">x</div>
+                <div id="handle-preloader" class="handle-preloader">
+                    
+                    <div class="animation-preloader">
+                        <div class="txt-loading">
+                            <span data-text-preloader="H" class="letters-loading">
+                            H
+                        </span>
+                            <span data-text-preloader="O" class="letters-loading">
+                            o
+                        </span>
+                            <span data-text-preloader="L" class="letters-loading">
+                            L
+                        </span>
+                            <span data-text-preloader="I" class="letters-loading">
+                            I
+                        </span>
+                        <span data-text-preloader="D" class="letters-loading">
+                            D
+                        </span>
+                        <span data-text-preloader="A" class="letters-loading">
+                            A
+                        </span>
+                        <span data-text-preloader="Y" class="letters-loading">
+                            Y
+                        </span>
+
+                        <span data-text-preloader="W" class="letters-loading">
+                            W
+                        </span>
+                        <span data-text-preloader="A" class="letters-loading">
+                            A
+                        </span>
+                        <span data-text-preloader="A" class="letters-loading">
+                            A
+                        </span>
+                        <span data-text-preloader="L" class="letters-loading">
+                            L
+                        </span>
+                        <span data-text-preloader="E" class="letters-loading">
+                            E
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <!-- Preloader End -->
+
+             <!-- Main Header-->
+         <!-- Main Header-->
+         <header class="main-header header-style-two">
+   
+   
+            <div class="header-top-most" style="text-align: center; justify-content: center; align-items: center; height: 50px;  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,0.35898109243697474) 33%, rgba(90,126,1,0.5046393557422969) 65%, rgba(0,212,255,0.3085609243697479) 82%);">
+                            <div class="pt-2">
+                                <span>Christmas Sale Save Upto</span> <span>USD 1,159.78</span> <span>On your Dubai trip</span>
+            
+                                <div id="timer" class="timer text-[15px] text-white p-[2px] rounded-[3px] h-[28px] font-semibold leading-[23px] pl-[5px] pr-[5px]" style="position: absolute; z-index: 1; top: 5px; right: 20px; background: rgba(0, 0, 0, 0.445);"></div>
+                            </div>
+                          
+<!-- -------------sale End -->
+
+    <!-- Header Upper -->
+    <div class="header-upper">
+        <div class="auto-container">
+            <!-- Main Box -->
+            <div class="main-box clearfix">
+                <!--Logo-->
+                <div class="logo-box">
+                    <div class="logo"><a href="index.html" title="HolidayWaale"><img src="images/logo.png" alt="" title="HolidayWaale"></a></div>
+                </div>
+
+                <div class="outer clearfix">
+                    <div class="nav-box clearfix">
+                        <!--Nav Outer-->
+                        <div class="nav-outer clearfix">
+                            <nav class="main-menu">
+                                <ul class="navigation clearfix">
+                                    <!-- <li class="current dropdown"><a href="#">Home</a> -->
+                                        <!-- <ul>
+                                            <li><a href="index-2.html">Home 01</a></li>
+                                            <li><a href="index-3.html">Home 02</a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li class="dropdown"><a href="#">Tours</a>
+                                        <ul>
+                                            <li><a href="/travel/tour-list.html">Tours List</a></li>
+                                            <li><a href="/travel/tour-packages.html">Tour Packages</a></li>
+                                            <li><a href="tour-single.html">Tour Details</a></li>
+                                            <li><a href="activity-single.html">Activities</a></li>
+                                            <!-- <li><a href="#">Activity Details</a></li> -->
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown"><a href="#">Destination</a>
+                                        <ul>
+                                            <li><a href="#">All Destinations</a></li>
+                                            <li><a href="#">Destination Single</a></li>
+                                            <li><a href="hotel-single.html">Hotels</a></li>
+                                            <li><a href="#">Hotel Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="about.html">About</a></li>
+                                    <li class="dropdown"><a href="#">News</a>
+                                        <ul>
+                                            <li><a href="#">Our Blog</a></li>
+                                            <li><a href="#">Blog Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </nav>
+                            <!-- Main Menu End-->
+                        </div>
+                        <!--Nav Outer End-->
+
+                    </div>
+
+                    <div class="links-box clearfix">
+                        <div class="link call-to">
+                            <!-- <a href="">Login / Signup</a> -->
+                            <a href=""><span class="nmbr">Login / Signup</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Nav Toggler hamburger-->
+                    <div class="nav-toggler">
+                        <button class="hidden-bar-opener"><span class="icon"><img src="images/icons/menu-icon.svg" alt=""></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header Upper -->
+           </header>
+<!--End Main Header -->
+        <!--End Main Header -->
+            
+            
+                    <!--Menu Backdrop-->
+                    <div class="menu-backdrop"></div>
+            
+                    <!-- Hidden Navigation Bar -->
+                           <section class="hidden-bar">
+                <!-- Hidden Bar Wrapper -->
+                <div class="hidden-bar-wrapper">
+                    <div class="hidden-bar-closer"><span class="icon"><svg class="icon-close" role="presentation" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></span></div>
+                    <div class="nav-logo-box">
+                        <div class="logo"><a href="#" title="HolidaiWaale"><img src="images/logo.png" alt="" title="HolidaiWaale"></a></div>
+                    </div>
+                    <!-- .Side-menu -->
+                    <div class="side-menu">
+                        <ul class="navigation clearfix">
+                            <li class="current dropdown"><a href="#">Home</a>
+                                <!-- <ul>
+                                    <li><a href="index-2.html">Home 01</a></li>
+                                    <li><a href="index-3.html">Home 02</a></li>
+                                </ul> -->
+                            </li>
+                            <li class="dropdown"><a href="#">Tours</a>
+                                <ul>
+                                    <li><a href="#">Tours List</a></li>
+                                    <li><a href="#">Tour Packages</a></li>
+                                    <li><a href="#">Tour Details</a></li>
+                                    <li><a href="#">Activities</a></li>
+                                    <li><a href="#">Activity Details</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown"><a href="#">Destination</a>
+                                <ul>
+                                    <li><a href="#">All Destinations</a></li>
+                                    <li><a href="#">Destination Single</a></li>
+                                    <li><a href="#">Hotels</a></li>
+                                    <li><a href="#">Hotel Details</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">About</a></li>
+                            <li class="dropdown"><a href="#">News</a>
+                                <ul>
+                                    <li><a href="#">Our Blog</a></li>
+                                    <li><a href="#">Blog Details</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.Side-menu -->
+            
+                    <div class="links-box clearfix">
+                        <div class="clearfix">
+                            <div class="link"><a href="#" class="theme-btn btn-style-one"><span>Login / Signup</span></a></div>
+                        </div>
+                    </div>
+            
+                </div>
+                <!-- / Hidden Bar Wrapper -->
+                          </section>
+            <!-- / Hidden Bar -->
+            
+
+
+        <!-- Banner Section -->
+        <section class="inner-banner">
+            <div class="image-layer" style="background-image: url(images/background/b-image-1.jpg);"></div>
+            <div class="auto-container">
+                <div class="content-box">
+                    <h1>Tour List</h1>
+                    <div class="bread-crumb">
+                        <ul class="clearfix">
+                            <li><a href="index-2.html">Home</a></li>
+
+                            <li class="current">Tour List</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--End Banner Section -->
+
+        <!--Sidebar Container-->
+        <div class="sidebar-container">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <!--Sidebar Side-->
+                    <!-- <div class="sidebar-side col-xl-4 col-lg-5 col-md-12 col-sm-12">
+                        <div class="sidebar-inner">
+                           
+
+                            <div class="sb-widget s-widget">
+                                <div class="w-inner">
+                                    <div class="s-title"><i class="fa fa-caret-right"></i>
+                                        <h4>Search Packages</h4>
+                                    </div>
+                                    <div class="form-box site-form">
+                                        <form method="post" action="">
+                                            <div class="form-group">
+                                                <div class="field-inner">
+                                                    <select name="field-name" class="custom-select">
+                                                    <option>Tourr </option>
+                                                    <option>Tour Title 01 <span></option>
+                                                    <option>Tour Title 02</option>
+                                                    <option>Tour Title 03</option>
+                                                    <option>Tour Title 04</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="field-inner">
+                                                    <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                    <i class="alt-icon fa fa-calendar-alt"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="field-inner">
+                                                    <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                    <i class="alt-icon fa fa-calendar-alt"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="field-inner">
+                                                    <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                    <i class="alt-icon fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="field-inner">
+                                                    <button type="submit" class="theme-btn f-btn"><span>Search <i class="fa fa-search"></i></span></button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="sb-widget p-widget">
+                                <div class="w-inner">
+                                    <div class="s-title"><i class="fa fa-caret-right"></i>
+                                        <h4>Pricing</h4>
+                                    </div>
+                                    <div class="range-slider">
+                                        <div class="price-range-slider"></div>
+                                        <div class="clearfix">
+                                            <div class="pull-left">
+                                                <div class="input">₹<input type="text" class="property-amount property-amount-1" name="field-name" readonly></div>
+                                            </div>
+                                            <div class="pull-right">
+                                                <div class="input">₹<input type="text" class="property-amount property-amount-2" name="field-name" readonly></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="sb-widget cbf-widget rating-widget">
+                                <div class="w-inner">
+                                    <div class="s-title"><i class="fa fa-caret-right"></i>
+                                        <h4>Rating</h4>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-1"> <label for="cb-1"><span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></label></div>
+                                        </li>
+                                        <li>
+                                                   <div class="cb-block">
+                                                    <input type="checkbox" id="cb-2"> <label for="cb-2"><span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="empty fa fa-star"></i></span><span class="txt">and Above</span></label></div>
+                                                    
+                                                   
+                                        </li>
+                                       
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-3"> <label for="cb-3"><span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i></span><span class="txt">and Above</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-4"> <label for="cb-4"><span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i></span><span class="txt">and Above</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-5"> <label for="cb-5"><span class="rating"><i class="fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i><i class="empty fa fa-star"></i></span><span class="txt">and Above</span></label></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                          
+                            <div class="sb-widget cbf-widget">
+                                <div class="w-inner">
+                                    <div class="s-title"><i class="fa fa-caret-right"></i>
+                                        <h4>Tour Type</h4>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-6"><label for="cb-6"><span class="txt">Adventure</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-7"><label for="cb-7"><span class="txt">Hiking</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-8"><label for="cb-8"><span class="txt">Romance</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-9"><label for="cb-9"><span class="txt">Culture</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-10"><label for="cb-10"><span class="txt">City Tour</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-11"><label for="cb-11"><span class="txt">History</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-12"><label for="cb-12"><span class="txt">Beach Tour</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-13"><label for="cb-13"><span class="txt">Sports Tour</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-14"><label for="cb-14"><span class="txt">Hiking</span></label></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                          
+                            <div class="sb-widget cbf-widget">
+                                <div class="w-inner">
+                                    <div class="s-title"><i class="fa fa-caret-right"></i>
+                                        <h4>Location</h4>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-15"><label for="cb-15"><span class="txt">New York</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-16"><label for="cb-16"><span class="txt">London</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-17"><label for="cb-17"><span class="txt">Paris</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-18"><label for="cb-18"><span class="txt">Muscat</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-19"><label for="cb-19"><span class="txt">Dhaka</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-20"><label for="cb-20"><span class="txt">Kolkata</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-21"><label for="cb-21"><span class="txt">Chottogram</span></label></div>
+                                        </li>
+                                        <li>
+                                            <div class="cb-block"><input type="checkbox" id="cb-22"><label for="cb-22"><span class="txt">Dubai</span></label></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+                    <!--Content Side-->
+                    <div class="content-side col-xl-12 col-lg-7 col-md-12 col-sm-12" style=" margin: 0 auto;">
+                        <div class="content-inner" >
+
+                            <div class="filter-row">
+                                <div class="clearfix">
+                                    <div class="s-info">Showing results of <strong>1 - 9</strong> of <strong>200</strong> items</div>
+                                    <div class="filters clearfix+">
+                                        <div class="sort-by">
+                                            <div class="drop-list-one">
+                                                <div class="inner clearfix">
+                                                    <div class="dropdown-outer open"><a class="btn-box dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" href="#">Sort <i class="fas fa-angle-down"></i></a>
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                            <li><a href="#">Latest First</a></li>
+                                                            <li><a href="#">Price</a></li>
+                                                            <li><a href="#">Date: Ascending</a></li>
+                                                            <li><a href="#">Date: Descending</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layout-links clearfix">
+                                            <a href="tour-packages.html"><span class="fas fa-th-large"></span></a> &ensp; <a class="active" href="tour-list.html"><span class="fas fa-th-list"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="packages" >
+                                <!--Block-->
+                                <!-- <div class="bg-gray-100 p-6"> -->
+          
+                                    <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                        <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                        
+                                            <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                    
+                                         <div class=" flex-1" style="height: 100%; ">
+                                          <h2 class="text-2xl font-bold flex items-center">
+                                           <i class="fas fa-certificate text-gray-500 mr-2">
+                                           </i>
+                                           Art Science Museum
+                                          </h2>
+                                          <p class="text-gray-700 mt-2">
+                                           Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                           <span class="text-blue-500">
+                                            read more
+                                           </span>
+                                          </p>
+                                    
+                                    
+                                    <!-- booking start -->
+                                          <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                               <!-- first div -->
+                                           
+                                          <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                            <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                     
+                                            <div>
+                                            <p class="text-gray-500">
+                                             2 Hours
+                                            </p>
+                                            <p class="font-semibold">
+                                             ArtScience Museum Singapore Tickets
+                                            </p>
+                                        </div>
+                                           </div>
+                                    
+                                    
+                                    
+                                    <!-- second div -->
+                                    <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                    
+                                        <div class="flex " style="flex-direction: column; gap: 5px;">
+                                    
+                                            <div>
+                                                <span class="text-green-500">
+                                                    <i class="fas fa-star">
+                                                    </i>
+                                                    4.8
+                                                   </span>
+                                                   <span class="text-gray-500 ml-2">
+                                                    (646)
+                                                   </span>
+                                            </div>
+                                            <div>
+                                    
+                                                <span class="line-through text-gray-500">
+                                                    INR 2,193
+                                                   </span>
+                                                   <span class="text-green-500 font-bold ml-2">
+                                                    INR 1,598
+                                                   </span>
+                                            </div>
+                                            
+                                            
+                                    
+                                           </div>
+                                        
+                                           <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                            Book Now
+                                           </button>
+                                        </div>
+                                    
+                                          </div>
+                                    
+                                          <!-- booking end -->
+                                    
+                                    
+                                         </div>
+                                        </div>
+                                       </div>
+                                    <!-- </div> -->
+
+                                <!--Block-->
+                                <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                    <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                    
+                                        <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                
+                                     <div class=" flex-1" style="height: 100%; ">
+                                      <h2 class="text-2xl font-bold flex items-center">
+                                       <i class="fas fa-certificate text-gray-500 mr-2">
+                                       </i>
+                                       Art Science Museum
+                                      </h2>
+                                      <p class="text-gray-700 mt-2">
+                                       Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                       <span class="text-blue-500">
+                                        read more
+                                       </span>
+                                      </p>
+                                
+                                
+                                <!-- booking start -->
+                                      <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                           <!-- first div -->
+                                       
+                                      <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                        <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                 
+                                        <div>
+                                        <p class="text-gray-500">
+                                         2 Hours
+                                        </p>
+                                        <p class="font-semibold">
+                                         ArtScience Museum Singapore Tickets
+                                        </p>
+                                    </div>
+                                       </div>
+                                
+                                
+                                
+                                <!-- second div -->
+                                <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                
+                                    <div class="flex " style="flex-direction: column; gap: 5px;">
+                                
+                                        <div>
+                                            <span class="text-green-500">
+                                                <i class="fas fa-star">
+                                                </i>
+                                                4.8
+                                               </span>
+                                               <span class="text-gray-500 ml-2">
+                                                (646)
+                                               </span>
+                                        </div>
+                                        <div>
+                                
+                                            <span class="line-through text-gray-500">
+                                                INR 2,193
+                                               </span>
+                                               <span class="text-green-500 font-bold ml-2">
+                                                INR 1,598
+                                               </span>
+                                        </div>
+                                        
+                                        
+                                
+                                       </div>
+                                    
+                                       <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                        Book Now
+                                       </button>
+                                    </div>
+                                
+                                      </div>
+                                
+                                      <!-- booking end -->
+                                
+                                
+                                     </div>
+                                    </div>
+                                   </div>
+
+                                <!--Block-->
+                                <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                    <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                    
+                                        <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                
+                                     <div class=" flex-1" style="height: 100%; ">
+                                      <h2 class="text-2xl font-bold flex items-center">
+                                       <i class="fas fa-certificate text-gray-500 mr-2">
+                                       </i>
+                                       Art Science Museum
+                                      </h2>
+                                      <p class="text-gray-700 mt-2">
+                                       Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                       <span class="text-blue-500">
+                                        read more
+                                       </span>
+                                      </p>
+                                
+                                
+                                <!-- booking start -->
+                                      <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                           <!-- first div -->
+                                       
+                                      <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                        <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                 
+                                        <div>
+                                        <p class="text-gray-500">
+                                         2 Hours
+                                        </p>
+                                        <p class="font-semibold">
+                                         ArtScience Museum Singapore Tickets
+                                        </p>
+                                    </div>
+                                       </div>
+                                
+                                
+                                
+                                <!-- second div -->
+                                <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                
+                                    <div class="flex " style="flex-direction: column; gap: 5px;">
+                                
+                                        <div>
+                                            <span class="text-green-500">
+                                                <i class="fas fa-star">
+                                                </i>
+                                                4.8
+                                               </span>
+                                               <span class="text-gray-500 ml-2">
+                                                (646)
+                                               </span>
+                                        </div>
+                                        <div>
+                                
+                                            <span class="line-through text-gray-500">
+                                                INR 2,193
+                                               </span>
+                                               <span class="text-green-500 font-bold ml-2">
+                                                INR 1,598
+                                               </span>
+                                        </div>
+                                        
+                                        
+                                
+                                       </div>
+                                    
+                                       <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                        Book Now
+                                       </button>
+                                    </div>
+                                
+                                      </div>
+                                
+                                      <!-- booking end -->
+                                
+                                
+                                     </div>
+                                    </div>
+                                   </div>
+
+                                <!--Block-->
+                                <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                    <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                    
+                                        <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                
+                                     <div class=" flex-1" style="height: 100%; ">
+                                      <h2 class="text-2xl font-bold flex items-center">
+                                       <i class="fas fa-certificate text-gray-500 mr-2">
+                                       </i>
+                                       Art Science Museum
+                                      </h2>
+                                      <p class="text-gray-700 mt-2">
+                                       Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                       <span class="text-blue-500">
+                                        read more
+                                       </span>
+                                      </p>
+                                
+                                
+                                <!-- booking start -->
+                                      <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                           <!-- first div -->
+                                       
+                                      <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                        <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                 
+                                        <div>
+                                        <p class="text-gray-500">
+                                         2 Hours
+                                        </p>
+                                        <p class="font-semibold">
+                                         ArtScience Museum Singapore Tickets
+                                        </p>
+                                    </div>
+                                       </div>
+                                
+                                
+                                
+                                <!-- second div -->
+                                <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                
+                                    <div class="flex " style="flex-direction: column; gap: 5px;">
+                                
+                                        <div>
+                                            <span class="text-green-500">
+                                                <i class="fas fa-star">
+                                                </i>
+                                                4.8
+                                               </span>
+                                               <span class="text-gray-500 ml-2">
+                                                (646)
+                                               </span>
+                                        </div>
+                                        <div>
+                                
+                                            <span class="line-through text-gray-500">
+                                                INR 2,193
+                                               </span>
+                                               <span class="text-green-500 font-bold ml-2">
+                                                INR 1,598
+                                               </span>
+                                        </div>
+                                        
+                                        
+                                
+                                       </div>
+                                    
+                                       <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                        Book Now
+                                       </button>
+                                    </div>
+                                
+                                      </div>
+                                
+                                      <!-- booking end -->
+                                
+                                
+                                     </div>
+                                    </div>
+                                   </div>
+
+                                <!--Block-->
+                                <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                    <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                    
+                                        <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                
+                                     <div class=" flex-1" style="height: 100%; ">
+                                      <h2 class="text-2xl font-bold flex items-center">
+                                       <i class="fas fa-certificate text-gray-500 mr-2">
+                                       </i>
+                                       Art Science Museum
+                                      </h2>
+                                      <p class="text-gray-700 mt-2">
+                                       Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                       <span class="text-blue-500">
+                                        read more
+                                       </span>
+                                      </p>
+                                
+                                
+                                <!-- booking start -->
+                                      <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                           <!-- first div -->
+                                       
+                                      <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                        <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                 
+                                        <div>
+                                        <p class="text-gray-500">
+                                         2 Hours
+                                        </p>
+                                        <p class="font-semibold">
+                                         ArtScience Museum Singapore Tickets
+                                        </p>
+                                    </div>
+                                       </div>
+                                
+                                
+                                
+                                <!-- second div -->
+                                <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                
+                                    <div class="flex " style="flex-direction: column; gap: 5px;">
+                                
+                                        <div>
+                                            <span class="text-green-500">
+                                                <i class="fas fa-star">
+                                                </i>
+                                                4.8
+                                               </span>
+                                               <span class="text-gray-500 ml-2">
+                                                (646)
+                                               </span>
+                                        </div>
+                                        <div>
+                                
+                                            <span class="line-through text-gray-500">
+                                                INR 2,193
+                                               </span>
+                                               <span class="text-green-500 font-bold ml-2">
+                                                INR 1,598
+                                               </span>
+                                        </div>
+                                        
+                                        
+                                
+                                       </div>
+                                    
+                                       <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                        Book Now
+                                       </button>
+                                    </div>
+                                
+                                      </div>
+                                
+                                      <!-- booking end -->
+                                
+                                
+                                     </div>
+                                    </div>
+                                   </div>
+
+                                <!--Block-->
+                                <div class="max-w-7xl mx-auto bg-white  shadow-md overflow-hidden" style="height: 350px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; margin-bottom: 40px;">
+                                    <div class="flex p-6" style="height: 100%; gap: 15px;">
+                                    
+                                        <img alt="Art Science Museum building with a lotus-shaped structure by the water" class=" object-cover" style="border-radius: 10px; height: 100%; width: 300px;" src="https://storage.googleapis.com/a1aa/image/0CeVjAvWyGxILyAzxplUf9wip35gJwVdBbFE25skOMlmPr9TA.jpg" />
+                                
+                                     <div class=" flex-1" style="height: 100%; ">
+                                      <h2 class="text-2xl font-bold flex items-center">
+                                       <i class="fas fa-certificate text-gray-500 mr-2">
+                                       </i>
+                                       Art Science Museum
+                                      </h2>
+                                      <p class="text-gray-700 mt-2">
+                                       Art Science Museum is the only museum in the world that combines art with science to create new and innovative installations. Drawing visitors from around the world, this museum is known for its creative exhibitions and unique architecture. This lotus-shaped building which is referred to as ‘a welcoming ...
+                                       <span class="text-blue-500">
+                                        read more
+                                       </span>
+                                      </p>
+                                
+                                
+                                <!-- booking start -->
+                                      <div class="mt-4 p-1 border rounded-lg flex booking-container" style="width: 500px; height: 50%; flex-direction: column; ">
+                                           <!-- first div -->
+                                       
+                                      <div class=" flex" style="width: 100%; height: 50%; justify-content: flex-start; gap: 10px; padding: 0;border-bottom: 1px solid rgba(211, 100, 100, 0.493); " >
+                                        <img alt="ArtScience Museum Singapore Tickets" style="" class="w-12 h-12 object-cover rounded" height="50" src="https://storage.googleapis.com/a1aa/image/ehS6oQC9YC0fpEdY33VHKrXaF8AjXuS65vlgWSmJxokoPr9TA.jpg" width="50" />
+                                 
+                                        <div>
+                                        <p class="text-gray-500">
+                                         2 Hours
+                                        </p>
+                                        <p class="font-semibold">
+                                         ArtScience Museum Singapore Tickets
+                                        </p>
+                                    </div>
+                                       </div>
+                                
+                                
+                                
+                                <!-- second div -->
+                                <div class="mt-2" style="display: flex; justify-content: space-between;"  >
+                                
+                                    <div class="flex " style="flex-direction: column; gap: 5px;">
+                                
+                                        <div>
+                                            <span class="text-green-500">
+                                                <i class="fas fa-star">
+                                                </i>
+                                                4.8
+                                               </span>
+                                               <span class="text-gray-500 ml-2">
+                                                (646)
+                                               </span>
+                                        </div>
+                                        <div>
+                                
+                                            <span class="line-through text-gray-500">
+                                                INR 2,193
+                                               </span>
+                                               <span class="text-green-500 font-bold ml-2">
+                                                INR 1,598
+                                               </span>
+                                        </div>
+                                        
+                                        
+                                
+                                       </div>
+                                    
+                                       <button class="bg-orange-500 text-white  rounded-lg h-8 px-2">
+                                        Book Now
+                                       </button>
+                                    </div>
+                                
+                                      </div>
+                                
+                                      <!-- booking end -->
+                                
+                                
+                                     </div>
+                                    </div>
+                                   </div>
+
+                            </div>
+
+
+                            <div class="styled-pagination" style="">
+                                <ul class="clearfix">
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+     
+    <!--Main Footer-->
+      <!-- footer 2 -->
+      <div class="bg-gray-800" style="height: 500px; margin-top: 100px;">
+        <footer class="bg-white  shadow-lg mx-auto p-8 mt-8 max-w-6xl" style="position: absolute; right: 100px; bottom: 300px; border: 1px solid #e0e0e054; border-radius: 20px; height: 370px; box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.14); box-sizing: border-box;">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+             <div style="border-right: 1px solid brown;">
+              <p class="font-semibold mb-4 footer-heading" style="">
+               ABOUT HOLIDAYWAALE
+              </p>
+              <ul>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#" style="">
+                 ABOUT US
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 WE ARE HIRING
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 HolidayWaale REVIEWS
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 TERMS &amp; CONDITIONS
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 PRIVACY POLICIES
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 COPYRIGHT POLICIES
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 SUPPORT
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-red-600 footer-list" href="#">
+                 BEWARE OF FRAUDS
+                 <i class="fas fa-exclamation-triangle">
+                 </i>
+                </a>
+               </li>
+              </ul>
+             </div>
+             <div style="border-right: 1px solid brown;">
+              <h3 class="font-semibold mb-4 footer-heading">
+               FOR SUPPLIERS
+              </h3>
+              <ul>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 LIST YOUR ACTIVITIES
+                </a>
+               </li>
+              </ul>
+              <h3 class="font-semibold mt-6 mb-4 footer-heading">
+               FOR BRANDS
+              </h3>
+              <ul>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 PARTNER WITH US
+                </a>
+               </li>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 DESTINATION MARKETING
+                </a>
+               </li>
+              </ul>
+             </div>
+             <div style="border-right: 1px solid brown;">
+              <h3 class="font-semibold mb-4 footer-heading">
+               FOR TRAVELLERS
+              </h3>
+              <ul>
+               <li class="mb-2">
+                <a class="text-gray-600 footer-list" href="#">
+                 GIFT AN EXPERIENCE
+                </a>
+               </li>
+              </ul>
+             </div>
+             <div>
+              <h3 class="font-semibold mb-4">
+               TRAVEL DESTINATIONS
+              </h3>
+              <div class="grid grid-cols-3 gap-2">
+               <div>
+                <img alt="Bali" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/bQZ9kqhsQVLtP5RDXU4SbBqB5IFRAmRLhf7KQJeEsWmLLB9TA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Dubai" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/TX643y4A9uKyKxjgyyrzseSwzaEp89RwimuQeAfDEa1SWC6nA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Singapore" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/YNaC75OiVQ5AG9vOy5J77PRN6R70Upr9w9wfFu6SXigilgeTA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Thailand" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/hZ8RO85HATanFJGev6B1MVES4owXYXn37Q6etv4w08p6KB9TA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Andaman" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/R0zGm2wgooKBEpOghuVeM2VF6Wp3Wbw7GSfmZ4H8iILDLB9TA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="India" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/fRfskaErwWmIxUlGQHulZ3qMpxSQcY8ffdz5LY7lenK4YJofE.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Ladakh" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/stAMSWs7JcboJhhO6dB3UleZfnyDYfTnovhSntryvqGEWC6nA.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Hong Kong" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/qL28cBIfW6we4EcGFhQg0sz6QWeLx5eHSLgApoiahz65rE0PB.jpg" width="100"/>
+               </div>
+               <div>
+                <img alt="Sri Lanka" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/A8ZpCeoLdekfMoi5tfOJzqgdBStsMc8BTUcBK60iIdkfXJofE.jpg" width="100"/>
+               </div>
+              </div>
+             </div>
+            </div>
+        </footer>   
+           <div class=" py-6" style="padding-top: 200px;">
+            <div class="max-w-6xl mx-auto text-center">
+             <img alt="HolidayWaale Logo" class="mx-auto mb-4" height="100" src="/travel/images/logo.png" width="100"/>
+           <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="line-1" style="width: 500px; height: 2px; background-color: black; color: #fd7e14;"></div>
+                <p style="color: #fd7e14; font-size: 25px; font-weight: bold;">Holidaywalle.com</p>
+            <div class="line-2" style="width: 500px; height: 2px; background-color: black;"></div>
+           </div>
+             
+        
+             <div class="flex justify-center space-x-4 mb-4">
+              <a class="text-white" href="#">
+               <i class="fab fa-facebook-f">
+               </i>
+              </a>
+              <a class="text-white" href="#">
+               <i class="fab fa-instagram">
+               </i>
+              </a>
+              <a class="text-white" href="#">
+               <i class="fab fa-twitter">
+               </i>
+              </a>
+              <a class="text-white" href="#">
+               <i class="fab fa-linkedin-in">
+               </i>
+              </a>
+              <a class="text-white" href="#">
+               <i class="fab fa-youtube">
+               </i>
+              </a>
+             </div>
+             <p class="text-gray-500 text-sm">
+              © 2024 HolidayWaale.com All rights reserved.
+             </p>
+             <p class="text-gray-500 text-xs mt-2">
+              The content and images used on this site are copyright protected and copyrights vests with the respective owners. The usage of the content and images on this website is intended to promote the works and no endorsement of the artist shall be implied. Unauthorized use is prohibited and punishable by law.
+             </p>
+            </div>
+           </div>
+        
+        </div>
+
+    </div>
+    <!--End pagewrapper-->
+
+    <!--Scroll to top-->
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="icon"><img src="images/icons/arrow-up.svg" alt="" title="Go To Top"></span></div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="js/jquery.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/popper.min.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/jquery-ui.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/jquery.fancybox.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/isotope.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/slick.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/appear.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/wow.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="js/custom-script.js" type="8c873495996548c64ecf1aaf-text/javascript"></script>
+    <script src="/travel/js/rocket-loader.min.js" data-cf-settings="8c873495996548c64ecf1aaf-|49" defer></script>
+    <!-- <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="8c873495996548c64ecf1aaf-|49" defer></script> -->
+</body>
+
+</html>

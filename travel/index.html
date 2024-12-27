@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tour And Travels</title>
+    <!-- Stylesheets -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon"> -->
+    <!-- <link rel="icon" href="images/favicon.png" type="image/x-icon"> -->
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="css/responsive.css" rel="stylesheet">
+
+        <!-- font awasome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+
+        <script src="https://cdn.tailwindcss.com">
+  </script>
+<style>
+    /* From Uiverse.io by SnyDeTreves */ 
+/*************/
+/* Variables */
+/*************/
+
+.map-container {
+  --city-radius: 2rem;
+  --city-sign-color-back: #00c080;
+  --city-sign-color-font: #fff;
+  --city-pin-size-font: 1.2rem;
+}
+
+/**********/
+/* Styles */
+/**********/
+
+/* Container */
+.map-container {
+  border-radius: 0.5em;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+  min-width: 15rem;
+  position: relative;
+  width: 120%;
+  aspect-ratio: 1;
+  /* margin-right: 500px; */
+}
+
+/* Map - Background */
+.map-background {
+  border-radius: inherit;
+  left: 0px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/* Map - Cities */
+.map-cities {
+  width: 100%;
+}
+.map-city {
+  border-radius: var(--city-radius);
+  left: calc(var(--x) * 1% - var(--city-radius));
+  padding: var(--city-radius);
+  position: absolute;
+  top: calc(var(--y) * 1% - var(--city-radius));
+}
+.map-city::after,
+.map-city::before {
+  font-size: var(--city-pin-size-font);
+}
+.map-city::before {
+  content: "•";
+  left: calc(-50% + var(--city-radius));
+  position: absolute;
+  top: calc(-0.65em + var(--city-radius));
+  text-align: center;
+  text-shadow: 0 1px 1px #000;
+  width: 100%;
+}
+.map-city::after {
+  clip-path: inset(-0.5em 0 0 0);
+  content: "📍";
+  left: calc(-50% + var(--city-radius));
+  position: absolute;
+  top: calc(-1em + var(--city-radius));
+  text-align: center;
+  transition: all 300ms ease-out;
+  width: 100%;
+  z-index: var(--y);
+}
+
+/* Map - Sign */
+.map-city__label {
+  display: none;
+  left: calc(-5em + 50%);
+  position: absolute;
+  text-align: center;
+  width: 10em;
+  z-index: 999;
+}
+.map-city__sign {
+  align-items: center;
+  background-color: var(--city-sign-color-back);
+  border-radius: 0.2rem;
+  border: 0.15em solid var(--city-sign-color-font);
+  box-shadow: 0 0 3px #000;
+  color: var(--city-sign-color-font);
+  column-gap: 0.3em;
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+  margin: 0 auto;
+  /* max-width: 110%; */
+  overflow: hidden;
+  padding: 0.4em 0.6em 0.4em 0.3em;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  width: max-content;
+}
+.map-city__sign::before {
+  content: attr(data-icon);
+}
+
+/************/
+/* Tracking */
+/************/
+
+/* Map - Cities */
+.map-city:hover::after {
+  clip-path: inset(-0.5em 0 0.5em 0);
+  transform: translateY(0.5em);
+}
+
+/* Map - Sign */
+.map-city:hover .map-city__label {
+  animation: fadein 300ms forwards ease-out;
+  display: block;
+}
+
+.map-city:hover .map-city__sign.anim::before {
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+.map-city:hover .map-city__sign.anim-grow::before {
+  animation-name: grow;
+  animation-timing-function: ease-in;
+}
+.map-city:hover .map-city__sign.anim-slidein::before {
+  animation-name: slidein;
+  animation-timing-function: ease-out;
+}
+
+/**************/
+/* Animations */
+/**************/
+
+/* Fade in from top */
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    top: calc(var(--city-radius));
+  }
+
+  100% {
+    opacity: 1;
+    top: calc(var(--city-radius) + var(--city-pin-size-font) / 2);
+  }
+}
+
+/* Grow from the ground */
+@keyframes grow {
+  0% {
+    transform: translate(0, 200%);
+  }
+
+  10% {
+    transform: translate(5%, 180%);
+  }
+
+  20% {
+    transform: translate(-10%, 160%);
+  }
+
+  30% {
+    transform: translate(15%, 140%);
+  }
+
+  40% {
+    transform: translate(-5%, 120%);
+  }
+
+  50% {
+    transform: translate(10%, 100%);
+  }
+
+  60% {
+    transform: translate(-15%, 80%);
+  }
+
+  70% {
+    transform: translate(5%, 60%);
+  }
+
+  80% {
+    transform: translate(0, 40%);
+  }
+
+  90% {
+    transform: translate(0, 20%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Slide in from left */
+@keyframes slidein {
+  0% {
+    transform: translateX(-200%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+
+/* footer */
+.footer-heading{
+        /* font-size: 15px;
+         color: #424242; 
+        font-weight: 600; 
+        line-height: 18px; 
+        margin-bottom: 10px;
+        letter-spacing: 1.6px; */
+    }
+
+    .footer-list{
+        font-size: 12px; 
+        font-weight: 500; 
+        line-height: 16px;
+         margin-bottom: 8px; 
+        letter-spacing: 1.3px;
+         cursor: pointer; 
+        transition: all 0.2s linear;
+        scale: 1;
+    }
+
+    .footer-list:hover{
+        /* color: #ffc107; */
+        color: #fd7e14;
+        font-size: 14px;
+        /* scale: 2.5; */
+    }
+
+
+    #form-page.active{
+        /* z-index: 5; */
+        /* opacity: 2; */
+        /* opacity: 2; */
+    }
+
+
+</style>
+</head>
+
+<body>
+
+     <!-- Preloader -->
+     <div class="loader-wrap">
+        <div class="preloader">
+            <div class="preloader-close">x</div>
+            <div id="handle-preloader" class="handle-preloader">
+                
+                <div class="animation-preloader">
+                    <div class="txt-loading">
+                        <span data-text-preloader="H" class="letters-loading">
+                        H
+                    </span>
+                        <span data-text-preloader="O" class="letters-loading">
+                        o
+                    </span>
+                        <span data-text-preloader="L" class="letters-loading">
+                        L
+                    </span>
+                        <span data-text-preloader="I" class="letters-loading">
+                        I
+                    </span>
+                    <span data-text-preloader="D" class="letters-loading">
+                        D
+                    </span>
+                    <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+                    <span data-text-preloader="Y" class="letters-loading">
+                        Y
+                    </span>
+
+                    <span data-text-preloader="W" class="letters-loading">
+                        W
+                    </span>
+                    <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+                    <span data-text-preloader="A" class="letters-loading">
+                        A
+                    </span>
+                    <span data-text-preloader="L" class="letters-loading">
+                        L
+                    </span>
+                    <span data-text-preloader="E" class="letters-loading">
+                        E
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader End -->
+
+
+    <div class="page-wrapper" id="main-page">
+
+         
+
+        <!-- Main Header-->
+         <header class="main-header header-style-two">
+   
+   
+            <div class="header-top-most" style="text-align: center; justify-content: center; align-items: center; height: 50px;  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,0.35898109243697474) 33%, rgba(90,126,1,0.5046393557422969) 65%, rgba(0,212,255,0.3085609243697479) 82%);">
+                            <div class="pt-2">
+                                <span>Christmas Sale Save Upto</span> <span>USD 1,159.78</span> <span>On your Dubai trip</span>
+            
+                                <div id="timer" class="timer text-[15px] text-white p-[2px] rounded-[3px] h-[28px] font-semibold leading-[23px] pl-[5px] pr-[5px]" style="position: absolute; z-index: 1; top: 5px; right: 20px; background: rgba(0, 0, 0, 0.445);"></div>
+                            </div>
+                          
+<!-- -------------sale End -->
+
+    <!-- Header Upper -->
+    <div class="header-upper">
+        <div class="auto-container">
+            <!-- Main Box -->
+            <div class="main-box clearfix">
+                <!--Logo-->
+                <div class="logo-box">
+                    <div class="logo"><a href="index.html" title="HolidayWaale"><img src="images/logo.png" alt="" title="HolidayWaale"></a></div>
+                </div>
+
+                <div class="outer clearfix">
+                    <div class="nav-box clearfix">
+                        <!--Nav Outer-->
+                        <div class="nav-outer clearfix">
+                            <nav class="main-menu">
+                                <ul class="navigation clearfix">
+                                    <!-- <li class="current dropdown"><a href="#">Home</a> -->
+                                        <!-- <ul>
+                                            <li><a href="index-2.html">Home 01</a></li>
+                                            <li><a href="index-3.html">Home 02</a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li class="dropdown"><a href="#">Tours</a>
+                                        <ul>
+                                            <li><a href="/travel/tour-list.html">Tours List</a></li>
+                                            <li><a href="/travel/tour-packages.html">Tour Packages</a></li>
+                                            <li><a href="tour-single.html">Tour Details</a></li>
+                                            <li><a href="activity-single.html">Activities</a></li>
+                                            <!-- <li><a href="#">Activity Details</a></li> -->
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown"><a href="#">Destination</a>
+                                        <ul>
+                                            <li><a href="#">All Destinations</a></li>
+                                            <li><a href="#">Destination Single</a></li>
+                                            <li><a href="hotel-single.html">Hotels</a></li>
+                                            <li><a href="#">Hotel Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="about.html">About</a></li>
+                                    <li class="dropdown"><a href="#">News</a>
+                                        <ul>
+                                            <li><a href="#">Our Blog</a></li>
+                                            <li><a href="#">Blog Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </nav>
+                            <!-- Main Menu End-->
+                        </div>
+                        <!--Nav Outer End-->
+
+                    </div>
+
+                    <div class="links-box clearfix">
+                        <div class="link call-to">
+                            <!-- <a href="">Login / Signup</a> -->
+                            <a href=""><span class="nmbr">Login / Signup</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Nav Toggler hamburger-->
+                    <div class="nav-toggler">
+                        <button class="hidden-bar-opener"><span class="icon"><img src="images/icons/menu-icon.svg" alt=""></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header Upper -->
+           </header>
+<!--End Main Header -->
+
+
+        <!--Menu Backdrop-->
+        <div class="menu-backdrop"></div>
+
+        <!-- Hidden Navigation Bar -->
+               <section class="hidden-bar">
+    <!-- Hidden Bar Wrapper -->
+    <div class="hidden-bar-wrapper">
+        <div class="hidden-bar-closer"><span class="icon"><svg class="icon-close" role="presentation" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></span></div>
+        <div class="nav-logo-box">
+            <div class="logo"><a href="#" title="HolidaiWaale"><img src="images/logo.png" alt="" title="HolidaiWaale"></a></div>
+        </div>
+        <!-- .Side-menu -->
+        <div class="side-menu">
+            <ul class="navigation clearfix">
+                <li class="current dropdown"><a href="#">Home</a>
+                    <!-- <ul>
+                        <li><a href="index-2.html">Home 01</a></li>
+                        <li><a href="index-3.html">Home 02</a></li>
+                    </ul> -->
+                </li>
+                <li class="dropdown"><a href="#">Tours</a>
+                    <ul>
+                        <li><a href="#">Tours List</a></li>
+                        <li><a href="#">Tour Packages</a></li>
+                        <li><a href="#">Tour Details</a></li>
+                        <li><a href="#">Activities</a></li>
+                        <li><a href="#">Activity Details</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#">Destination</a>
+                    <ul>
+                        <li><a href="#">All Destinations</a></li>
+                        <li><a href="#">Destination Single</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Hotel Details</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">About</a></li>
+                <li class="dropdown"><a href="#">News</a>
+                    <ul>
+                        <li><a href="#">Our Blog</a></li>
+                        <li><a href="#">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <!-- /.Side-menu -->
+
+        <div class="links-box clearfix">
+            <div class="clearfix">
+                <div class="link"><a href="#" class="theme-btn btn-style-one"><span>Login / Signup</span></a></div>
+            </div>
+        </div>
+
+    </div>
+    <!-- / Hidden Bar Wrapper -->
+              </section>
+<!-- / Hidden Bar -->
+
+
+        <!-- Banner Section -->
+        <section class="banner-two">
+            <div class="banner-container">
+                <div class="banner-slider">
+                    <div class="swiper-wrapper">
+                        <!--Slide Item-->
+                        <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/viedo-6.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/bannerviedo.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+         
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/image-1.jpg);"></div> -->
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Slide Item-->
+                        <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/viedo-2.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/bannerviedo.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+         
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/banner2.jpg);"></div> -->
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Slide Item-->
+                        <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/bannerviedo.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/bannerviedo.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/bannerviedo.mp4);"></div> -->
+
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!--Slide Item-->
+                         <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/viedo-3.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/viedo-3.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/bannerviedo.mp4);"></div> -->
+
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!--Slide Item-->
+                         <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/viedo-4.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/viedo-4.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/bannerviedo.mp4);"></div> -->
+
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!--Slide Item-->
+                         <div class="swiper-slide slide-item">
+                            <video class="video-background" autoplay muted loop style="position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover; 
+                            z-index: -1;">
+                                <source src="/travel/images/main-slider/viedo-5.mp4" type="video/mp4">
+                                <source src="/travel/images/main-slider/bannerviedo.mp4" type="video/webm">
+                                Your browser does not support the video tag.
+                              </video>
+                            <!-- <div class="image-layer" style="background-image: url(images/main-slider/bannerviedo.mp4);"></div> -->
+
+                            <div class="auto-container">
+                                <div class="content-box">
+                                    <div class="content">
+                                        <div class="clearfix">
+                                            <div class="inner">
+                                                <h1><span>Adventure<i class="s-text">Adventure</i></span></h1>
+                                                <div class="text">Disover top places and enjoy extreme activities around the world with a cheap price.</div>
+                                                <div class="links-box clearfix">
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                                    <div class="link"><a href="#" class="theme-btn btn-style-three"><span>About Us</span></a></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="swiper-button-prev"><span class="fa fa-angle-left"></span></div> -->
+                    <!-- <div class="swiper-button-next"><span class="fa fa-angle-right"></span></div> -->
+                </div>
+            </div>
+        </section>
+        <!--End Banner Section -->
+
+        <!--Serach One-->
+        <section class="search-one">
+            <div class="auto-container">
+                <div class="tabs-box search-tabs">
+                    <ul class="tab-buttons clearfix">
+                        <li class="tab-btn active-btn" data-tab="#tab-1"><span>Hotel</span></li>
+                        <li class="tab-btn" data-tab="#tab-2"><span>Tour</span></li>
+                        <li class="tab-btn" data-tab="#tab-3"><span>Activity</span></li>
+                        <li class="tab-btn" data-tab="#tab-4"><span>Car</span></li>
+                        <li class="tab-btn" data-tab="#tab-5"><span>Cruise</span></li>
+                        <li class="tab-btn" data-tab="#tab-6"><span>Flights</span></li>
+                    </ul>
+                    <div class="tabs-content">
+                        <!-- Tab -->
+                         <div class="tab active-tab" id="tab-1">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Hotal Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="City?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Check-in</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in Date" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Check-out</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out Date" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests Count" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit<i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!--Tab-->
+                         <div class="tab" id="tab-2">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Tour Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Where to go?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Start</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">End</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit <i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!--Tab-->
+                         <div class="tab" id="tab-3">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Activity Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Where to go?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Start</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">End</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit <i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div> 
+                        <!--Tab-->
+                         <div class="tab" id="tab-4">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Car Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Where to go?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Start</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">End</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit <i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!--Tab-->
+                         <div class="tab" id="tab-5">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Cruise Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Where to go?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Start</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">End</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit <i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div> 
+                        <!--Tab-->
+                         <div class="tab" id="tab-6">
+                            <div class="form-box site-form">
+                                <form method="post" action="">
+                                    <div class="row clearfix">
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Flights Destination</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Where to go?" required>
+                                                <i class="alt-icon fa fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Start</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check in" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">End</div>
+                                            <div class="field-inner">
+                                                <input class="datepicker" type="text" name="field-name" value="" placeholder="Check out" required>
+                                                <i class="alt-icon fa fa-calendar-alt"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="field-label">Guest</div>
+                                            <div class="field-inner">
+                                                <input type="text" name="field-name" value="" placeholder="Guests" required>
+                                                <i class="alt-icon fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="theme-btn f-btn"><span>Submit <i class="fa fa-search"></i></span></button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!--Popular Section-->
+        <section class="popular-section">
+            <div class="auto-container">
+                 <div class="title-box wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                    <div class="subtitle">Start Travelling Today</div>
+                    <h2><span>Popular Locations</span></h2>
+                </div> 
+                <div class="carousel-box wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                    <div class="bg-grad-left"><img src="images/background/bg-gradient-15.png" alt="" title=""></div>
+                    <div class="bg-grad-right"><img src="images/background/bg-gradient-16.png" alt="" title=""></div>
+                    <div class="d-elem-1"><img src="images/resource/d-elem-7.png" alt=""></div>   
+                    
+                    
+                    <div class="popular-carousel">
+     
+                       
+                        
+
+
+
+                        <!--Block-->
+                         <div class="popular-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-6.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">New York</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block alternate">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-7.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">London</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-8.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">Paris</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block alternate">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-9.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">Sydney</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-6.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">New York</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block alternate">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-7.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">London</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-8.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">Paris</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                        <!--Block-->
+                         <div class="popular-block alternate">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <div class="image"><a href="destination-single.html"><img src="images/resource/image-9.jpg" alt=""></a></div>
+                                </div>
+                                <div class="hvr-box">
+                                    <div class="hvr-inner">
+                                        <h3><a href="destination-single.html">Sydney</a></h3>
+                                        <div class="info"><span>20 Hotel</span> <span>30 Tours</span> <span>10 Cars</span> <span>18 Flights</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Intro Section-->
+        <section class="intro-section no-padd-top">
+            <div class="auto-container" style="background-image: url(images/background/pattern-1.png);    
+           
+            background-repeat: repeat;
+           ">
+            <!-- background-position: left top;
+             position: absolute;
+           left: 0;
+             top: 0;
+             width: 100%; -->
+            
+                <div class="title-box centered wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                    <div class="subtitle">Let’s Travel Now</div>
+                    <h2><span>Explore the World</span></h2>
+                </div>
+                <div class="row clearfix justify-content-center">
+                    <!--Block-->
+                     <div class="intro-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                        <div class="inner-box">
+                            <div class="icon"><span><img src="images/resource/intro-1.png" alt=""></span></div>
+                            <h4>Most Popular Destination</h4>
+                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud.</div>
+                        </div>
+                    </div>
+                    <!--Block-->
+                     <div class="intro-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="1500ms">
+                        <div class="inner-box">
+                            <div class="icon"><span><img src="images/resource/intro-2.png" alt=""></span></div>
+                            <h4>Budget Friendly Packages</h4>
+                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud.</div>
+                        </div>
+                    </div> 
+                    <!--Block-->
+                     <div class="intro-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="600ms" data-wow-duration="1500ms">
+                        <div class="inner-box">
+                            <div class="icon"><span><img src="images/resource/intro-3.png" alt=""></span></div>
+                            <h4>Satisfaction Guarranted</h4>
+                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud.</div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </section>
+
+        <!--Packages Section-->
+       
+        <section class="packages-two">
+            <div class="bg-layer" style="background-image: url(images/background/pattern-3.jpg);"></div>
+            <div class="auto-container">
+              
+                <div class="tabs-box pkg-tabs">
+                     <div class="title-outer clearfix">
+                        <div class="title-box">
+                            <div class="subtitle">Packages</div>
+                            <h2><span>Top Destinations</span></h2>
+                        </div>
+                        <div class="tab-btns">
+                            <ul class="tab-buttons clearfix">
+                                <li class="tab-btn active-btn" data-tab="#pkg-tab-1"><span>Hotel</span></li>
+                                <li class="tab-btn" data-tab="#pkg-tab-2"><span>Tour</span></li>
+                                <li class="tab-btn" data-tab="#pkg-tab-3"><span>Activity</span></li>
+                                <li class="tab-btn" data-tab="#pkg-tab-4"><span>Car</span></li>
+                                <li class="tab-btn" data-tab="#pkg-tab-5"><span>Cruise</span></li>
+                                <li class="tab-btn" data-tab="#pkg-tab-6"><span>Flight</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tabs-content">
+                        <div class="tab active-tab" id="pkg-tab-1">
+                            <div class="subtitle">Hotals</div>
+
+                            <div class="clearfix justify-content-center" style="display: flex; flex-direction: column; gap: 30px; justify-content: center; align-items: center;">
+                               <div style="display: flex; gap: 50px;">
+                                <!-- card 1 -->
+                                <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center" onclick="openForm()">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback form
+                                     </button>
+                                    </div>
+                                   </div>
+                                   <!-- card2 -->
+                                   <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback
+                                     </button>
+                                    </div>
+                                   </div>
+
+                                   <!-- card3 -->
+                                   <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback
+                                     </button>
+                                    </div>
+                                   </div>
+                               </div>  
+
+                               <div style="display: flex; gap: 50px;">
+                                <!-- card 1 -->
+                                <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback
+                                     </button>
+                                    </div>
+                                   </div>
+                                   <!-- card2 -->
+                                   <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback
+                                     </button>
+                                    </div>
+                                   </div>
+
+                                   <!-- card3 -->
+                                   <div class="rounded-lg shadow-lg overflow-hidden" style="width: 380px;">
+                                    <div class="relative " style="border-radius: 20px;">
+                                     <img alt="Couple standing in front of a temple in Bali" class="w-full h-55 object-cover" height="400" style="border-radius: 20px; " src="https://storage.googleapis.com/a1aa/image/pf9ePXTSnrl2QUeb3lWsoRqYG5ydHmOxXpEH2U7Qiao1LE6nA.jpg" style=""/>
+                                     <div class="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                      Save USD 348
+                                     </div>
+                                    </div>
+                                    <div class="p-2">
+                                     <div class="flex items-center justify-between">
+                                      <span class="text-sm text-gray-600" style="font-size: 14px; font-weight: 400; line-height: 1; color: #515151; ">
+                                       7 days &amp; 6 nights
+                                      </span>
+                                      <div class="flex items-center">
+                                       <i class="fas fa-star text-green-500">
+                                       </i>
+                                       <span class="ml-1 text-sm text-gray-600">
+                                        5.0 (512)
+                                       </span>
+                                      </div>
+                                     </div>
+                                     <h3 class="mt-2 text-lg font-bold" style="line-height: 23px; font-size: 17px; font-weight: 600; text-transform: capitalize; ">
+                                      Singapore And Bali Honeymoon Bliss | City Romance To Tropical Retreat
+                                     </h3>
+                                     <p class="mt-3 text-sm text-gray-600" style="background: linear-gradient(180deg, rgba(255, 186, 10, .1), rgba(255, 186, 10, 0)); 
+                          position: relative; font-size: 15px; ">
+                                     <span style="font-weight: bolder; color: black;"> 3D</span> Singapore . <span style="font-weight: bolder; color: black;">4D</span> Kuta
+                                     </p>
+                                     <div class="flex items-center mt-2">
+                                     
+                                      <span class="bg-red-500 text-white text-xs font-bold " style="display:flex; align-items: center;  width: fit-content; background: linear-gradient(93deg, rgb(255, 123, 38), rgb(236, 4, 140)); padding: 0px 5px 0px 0px; height: 18px; border-radius: 30px; ">
+                                          <img src="/travel/images/icons/santaclaus_1.gif" alt="" width="40px" style="  margin-top: -12px; margin-left: -10px;" >     
+                                       CHRISTMAS SALE!
+                                      </span>
+                                      <span class="ml-2 bg-green-100 text-green-500 text-xs font-bold px-2 py-1 rounded">
+                                       SAVE USD 348
+                                      </span>
+                                     </div>
+                                     <div class="mt-4">
+                                      <span class="text-xl font-bold text-gray-800">
+                                       USD 647
+                                      </span>
+                                      <span class="text-sm text-gray-500 line-through ml-2">
+                                       USD 996
+                                      </span>
+                                     </div>
+                                     <button class="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded flex items-center justify-center">
+                                      <i class="fas fa-phone-alt mr-2">
+                                      </i>
+                                      Request Callback
+                                     </button>
+                                    </div>
+                                   </div>
+                               </div>  
+
+
+ 
+                            </div>
+                        </div>
+                        <div class="tab" id="pkg-tab-2">
+                            <div class="subtitle">Tours</div>
+                            <div class="row clearfix justify-content-center">
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-10.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Tours</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-11.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-12.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-13.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-14.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-15.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab" id="pkg-tab-3">
+                            <div class="subtitle">Activitys</div>
+                            <div class="row clearfix justify-content-center">
+                                <!--Block-->
+                                <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-10.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">Activities</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Block-->
+                                <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-11.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>             
+                                                    <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-12.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-13.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-14.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-15.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="tab" id="pkg-tab-4">
+                            <div class="subtitle">Car</div>
+                            <div class="row clearfix justify-content-center">
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-10.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">cars</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-11.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!-- Block -->
+                                <!-- <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-12.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-13.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-14.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-15.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="tab" id="pkg-tab-5">
+                            <div class="subtitle">Cruise</div>
+                            <div class="row clearfix justify-content-center">
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-10.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">Cruise</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-11.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-12.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-13.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-14.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-15.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="tab" id="pkg-tab-6">
+                            <div class="subtitle">Flight</div>
+                            <div class="row clearfix justify-content-center">
+                                <!--Block-->
+                                <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                     <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-10.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">Flights</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-11.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-12.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-13.jpg" alt=""></a></div>
+                                            <div class="b-title top-rated"><span>Top Rated</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-14.jpg" alt=""></a></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--Block-->
+                                 <div class="package-block alt col-lg-4 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="image"><a href="#"><img src="images/resource/image-15.jpg" alt=""></a></div>
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <div class="fav-btn"><a href="#"><span class="far fa-heart"></span></a></div>
+                                        </div>
+                                        <div class="lower-box">
+                                            <div class="location">New York</div>
+                                            <h5><a href="#">Hotel Calyfornia Paramount</a></h5>
+                                            <div class="bottom-box clearfix">
+                                                <div class="rating"><a href="#" class="theme-btn"><i class="fa fa-star"></i> <strong>4.8</strong> &ensp; <span class="count">3210 Reviews</span></a></div>
+                                                <div class="price">Start from &ensp;<span class="amount">₹399</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="lower-data">
+                <div class="auto-container">
+                    <div class="content-box">
+                        <div class="d-elem-1"><img src="images/resource/d-elem-8.png" alt=""></div>
+                        <div class="row clearfix">
+                            <div class="data-col col-xl-6 col-lg-4 col-md-12 col-sm-12 wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                                <!--Block-->
+                                <div class="featured-block-one">
+                                    <div class="inner-box">
+                                        <div class="image-layer" style="background-image: url(images/resource/featured-1.jpg);"></div>
+                                        <div class="over-box">
+                                            <div class="b-title featured"><span>Featured</span></div>
+                                            <h3><a href="destination-single.html">Pleasure Tour in Hotel <br>London Hives</a></h3>
+                                            <div class="duration">5 Days 4 Nights</div>
+                                            <div class="price"><span class="amount">₹299</span> <sub>/ Per Person</sub></div>
+                                            <div class="link-box"><a href="destination-single.html" class="theme-btn btn-style-two"><span>Book Now</span></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data-col col-xl-3 col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="1500ms">
+                                <!--Block-->
+                                 <div class="featured-block-one alt">
+                                    <div class="inner-box">
+                                        <div class="image-layer" style="background-image: url(images/resource/featured-2.jpg);"></div>
+                                        <div class="over-box">
+                                            <h6>Tips & Tricks</h6>
+                                            <h3><a href="blog-single.html">Amazing Trip Ideas</a></h3>
+                                            <div class="link-box"><a href="blog-single.html" class="theme-btn btn-style-three"><span>Read More</span></a></div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="data-col col-xl-3 col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="600ms" data-wow-duration="1500ms">
+                                <!--Block-->
+                                <div class="featured-block-one alt">
+                                    <div class="inner-box">
+                                        <div class="image-layer" style="background-image: url(images/resource/featured-3.jpg);"></div>
+                                        <div class="over-box">
+                                            <h6>Special Deal</h6>
+                                            <h3><a href="blog-single.html">Get 30% Off <br>in Beach <br>Tour</a></h3>
+                                            <div class="link-box"><a href="destination-single.html" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+       
+        <!--About Two Section-->
+        <section class="about-two">
+            <div class="bg-grad-right"><img src="images/background/bg-gradient-18.png" alt="" title=""></div>
+            <div class="auto-container">
+                <div class="outer-box">
+
+                    <div class="d-elem-1"><img src="images/resource/d-elem-9.png" alt=""></div>
+                    <div class="bg-grad-left"><img src="images/background/bg-gradient-17.png" alt="" title="">
+                    
+                    </div>
+                    <div class="row clearfix">
+                        <!--Text Col-->
+                        <div class="text-col col-lg-7 col-md-12 col-sm-12">
+                            <div class="inner wow fadeInRight" data-wow-duration="1500ms" data-wow-delay="0ms">
+                                <div class="title-box">
+                                    <div class="subtitle">Let’s Explore the World</div>
+                                    <h2><span>We Can Make Your Tour Most Enjoyable Ever</span></h2>
+                                    <div class="text">
+                                        <p>Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua enim ad minim reprehenderit in voluptate volor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                            </p>
+                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste.</p>
+                                    </div>
+                                </div>
+                                <div class="facts-two">
+                                    <div class="row clearfix">
+                                        <div class="fact-block col-lg-4 col-md-4 col-sm-6">
+                                            <div class="inner-box clearfix">
+                                                <div class="fact-count">
+                                                    <div class="count-box"><span class="count-text" data-stop="2" data-speed="1000">0</span>K</div>
+                                                </div>
+                                                <div class="fact-title">Total <br>Location</div>
+                                            </div>
+                                        </div>
+                                        <div class="fact-block col-lg-4 col-md-4 col-sm-6">
+                                            <div class="inner-box clearfix">
+                                                <div class="fact-count">
+                                                    <div class="count-box"><span class="count-text" data-stop="5" data-speed="1500">0</span>K</div>
+                                                </div>
+                                                <div class="fact-title">Travel <br>Activity</div>
+                                            </div>
+                                        </div>
+                                        <div class="fact-block col-lg-4 col-md-4 col-sm-6">
+                                            <div class="inner-box clearfix">
+                                                <div class="fact-count">
+                                                    <div class="count-box"><span class="count-text" data-stop="8" data-speed="2000">0</span>K</div>
+                                                </div>
+                                                <div class="fact-title">Tour <br>Packages</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="link-box"><a href="#" class="theme-btn btn-style-two"><span>More About Us</span></a></div>
+                            </div>
+                        </div>
+                        <!--Image Col-->
+                         <div class="image-col col-lg-5 col-md-12 col-sm-12">
+                            <div class="inner wow fadeInLeft" data-wow-duration="1500ms" data-wow-delay="0ms">
+                                <div class="d-elem-2"><img src="images/resource/d-elem-10.png" alt=""></div>
+                             
+                              <!-- map -->
+                                <div class="map-container">
+  <svg viewBox="0 0 500 500" class="map-background">
+    <rect style="fill: #f5f0e5" width="500" height="500"></rect>
+    <path
+      style="fill: #90daee"
+      d="M0,367.82c5.83-4.39,14.42-10.16,25.59-15.34,4.52-2.09,43.19-19.51,79.55-11.93,36.1,7.52,35.75,32.55,78.41,60.23,46.34,30.06,109.47,41.21,123.32,22.1,11.95-16.49-22.61-41.92-13.66-84.6,4.85-23.1,22.33-50.71,47.73-58.52,42.42-13.05,78.83,39.45,102.84,23.86,15.81-10.26.01-32.87,22.73-74.43,5.8-10.62,11.65-21.15,11.93-36.93.28-15.69-5.63-26.64-7.95-32.39-6.66-16.45-6.21-45.15,28.84-98.55.23,146.23.46,292.46.69,438.69H0v-132.18Z"
+    ></path>
+  </svg>
+  <div class="map-cities">
+    <div style="--x: 15; --y: 67;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🏖️" class="map-city__sign">Indonesia,Bali</span>
+      </div>
+    </div>
+    <div style="--x: 32; --y: 32;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🌷" class="map-city__sign anim anim-grow"
+          >Maldives,Male</span
+        >
+      </div>
+    </div>
+    <div style="--x: 58; --y: 83;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🏄" class="map-city__sign anim anim-slidein"
+          >UAE,Dubai</span
+        >
+      </div>
+    </div>
+    <div style="--x: 65; --y: 22;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🏛️" class="map-city__sign">Thailand,Bangkok</span>
+      </div>
+    </div>
+    <div style="--x: 87; --y: 58;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🎢" class="map-city__sign">Nepal,Kathmandu</span>
+      </div>
+    </div>
+    <div style="--x: 94; --y: 38;" class="map-city">
+      <div class="map-city__label">
+        <span data-icon="🌊" class="map-city__sign anim anim-slidein"
+          >Coast city</span
+        >
+      </div>
+    </div>
+  </div>
+                                      </div>
+<!-- map end -->
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+
+        <!--Why Us Section-->
+        <section class="why-us-two">
+            <div class="auto-container">
+                <div class="outer-box">
+                    <div class="bg-grad-left"><img src="images/background/bg-gradient-19.png" alt="" title=""></div>
+                    <div class="bg-grad-right"><img src="images/background/bg-gradient-20.png" alt="" title=""></div>
+                    <div class="row clearfix">
+                        <!--Text Col-->
+                        <div class="text-col col-lg-6 col-md-12 col-sm-12">
+                            <div class="inner wow fadeInLeft" data-wow-duration="1500ms" data-wow-delay="0ms">
+                                <div class="d-elem-1"><img src="images/resource/d-elem-11.png" alt=""></div>
+                                <div class="title-box">
+                                    <div class="subtitle">Why Choose Us</div>
+                                    <h2><span>We Arrange the Best Tour Ever Possible</span></h2>
+                                    <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua enim ad minim reprehender</div>
+                                </div>
+                                <div class="features">
+                                    <div class="f-block-three">
+                                        <div class="inner-box">
+                                            <div class="icon"><img src="images/resource/f-icon-7.png" alt=""></div>
+                                            <h4>Amazing Tour Plans</h4>
+                                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua eniet.</div>
+                                        </div>
+                                    </div>
+                                    <div class="f-block-three">
+                                        <div class="inner-box">
+                                            <div class="icon"><img src="images/resource/f-icon-8.png" alt=""></div>
+                                            <h4>Best Travel Guides</h4>
+                                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua eniet.</div>
+                                        </div>
+                                    </div>
+                                    <div class="f-block-three">
+                                        <div class="inner-box">
+                                            <div class="icon"><img src="images/resource/f-icon-9.png" alt=""></div>
+                                            <h4>Affordable Pricing Plans</h4>
+                                            <div class="text">Sectetur adipisicing elised do eiusmod tempor incidid unt ut labore et dolore magna aliqua eniet.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Image Col-->
+                        <div class="image-col col-lg-6 col-md-12 col-sm-12">
+                            <div class="inner wow fadeInRight" data-wow-duration="1500ms" data-wow-delay="0ms">
+                                <div class="d-elem-2"><img src="images/resource/d-elem-12.png" alt=""></div>
+                                <div class="image-box">
+                                    <img src="images/resource/why-image-2.jpg" alt="" title="">
+                                </div>
+                                <div class="rating"><span class="icon fa fa-star"></span><span class="count">5,0</span></div>
+                                <div class="fact-block f-1">
+                                    <div class="inner-box clearfix">
+                                        <div class="fact-count">
+                                            <div class="count-box"><span class="count-text" data-stop="5" data-speed="2000">0</span>K</div>
+                                        </div>
+                                        <div class="fact-title">Total <br>Travellers</div>
+                                    </div>
+                                </div>
+                                <div class="fact-block f-2">
+                                    <div class="inner-box clearfix">
+                                        <div class="fact-count">
+                                            <div class="count-box"><span class="count-text" data-stop="20" data-speed="2000">0</span>K</div>
+                                        </div>
+                                        <div class="fact-title">Tour <br>Organized</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="get-help wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                <div class="auto-container">
+                    <div class="content-box">
+                        <div class="row clearfix">
+                            <div class="text-col col-lg-9 col-md-12 col-sm-12">
+                                <div class="inner">
+                                    <div class="title-box">
+                                        <div class="subtitle">Confused? Get Help</div>
+                                        <h2><span>Get Help from Our Travel Agent <i><img src="images/resource/d-elem-13.png" alt=""></i></span></h2>
+                                        <div class="text">Kabore et dolore magna aliqua eniet.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="link-col col-lg-3 col-md-12 col-sm-12">
+                                <div class="inner">
+                                    <div class="link-box"><a href="destination-single.html" class="theme-btn btn-style-two"><span>Explore Now</span></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+        </section>
+
+        <!--Testimonials Section-->
+        <section class="testimonials-two">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <!--Text Col-->
+                    <div class="text-col col-lg-6 col-md-12 col-sm-12">
+                        <div class="inner wow fadeInRight" data-wow-duration="1500ms" data-wow-delay="0ms">
+                            <div class="title-box">
+                                <div class="subtitle">Testimonials</div>
+                                <h2><span>What People Say</span></h2>
+                            </div>
+                            <div class="carousel-box">
+                                <div class="testi-slider-two">
+                                    <!--Block-->
+                                    <div class="testi-block-two">
+                                        <div class="inner-box">
+                                            <div class="quote-icon">
+                                                <img src="/travel/images/quote.png" alt="Left Quote Icon" width="80" height="80"/>
+                                                <!-- <a href="https://www.flaticon.com/free-icons/quote" title="quote icons">Quote icons created by Icon Mela - Flaticon</a> -->
+                                                <!-- <span class="flaticon-left-quote"></span> -->
+                                            </div>
+                                            <div class="rating">
+                                                <div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                                            </div>
+                                            <div class="text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deser unt mollit anim id est laborum. Sed ut pers piciatis unde omnis iste natus error sit voluptatem accusant iu mod tempor incididunt
+                                                ut labore et dolore magna aliq niam, quis nostrud.</div>
+                                            <div class="info">
+                                                <div class="image"><img src="images/resource/testi-4.jpg" alt=""></div>
+                                                <div class="name">Salma Harnandez</div>
+                                                <div class="designation">Web Developer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Block-->
+                                    <div class="testi-block-two">
+                                        <div class="inner-box">
+                                            <img src="/travel/images/quote.png" alt="Left Quote Icon" width="80" height="80"/>
+                                            <!-- <div class="quote-icon"><span class="flaticon-left-quote"></span></div> -->
+                                            <div class="rating">
+                                                <div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                                            </div>
+                                            <div class="text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deser unt mollit anim id est laborum. Sed ut pers piciatis unde omnis iste natus error sit voluptatem accusant iu mod tempor incididunt
+                                                ut labore et dolore magna aliq niam, quis nostrud.</div>
+                                            <div class="info">
+                                                <div class="image"><img src="images/resource/testi-4.jpg" alt=""></div>
+                                                <div class="name">Salma Harnandez</div>
+                                                <div class="designation">Web Developer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Block-->
+                                     <div class="testi-block-two">
+                                        <div class="inner-box">
+                                            <img src="/travel/images/quote.png" alt="Left Quote Icon" width="80" height="80"/>
+                                            <!-- <div class="quote-icon"><span class="flaticon-left-quote"></span></div> -->
+                                            <div class="rating">
+                                                <div class="stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                                            </div>
+                                            <div class="text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deser unt mollit anim id est laborum. Sed ut pers piciatis unde omnis iste natus error sit voluptatem accusant iu mod tempor incididunt
+                                                ut labore et dolore magna aliq niam, quis nostrud.</div>
+                                            <div class="info">
+                                                <div class="image"><img src="images/resource/testi-4.jpg" alt=""></div>
+                                                <div class="name">Salma Harnandez</div>
+                                                <div class="designation">Web Developer</div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Image Col-->
+                    <div class="image-col col-lg-6 col-md-12 col-sm-12">
+                        <div class="inner wow fadeInLeft" data-wow-duration="1500ms" data-wow-delay="0ms">
+                            <div class="image-box"><img src="images/resource/image-16.png" alt="" title=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Clients Section-->
+        <section class="clients-two alternate">
+            <div class="auto-container" style="margin-top: -40px; margin-bottom: 20px;">
+                <div class="carousel-box">
+                    <div class="clients-carousel">
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-6.png" alt=""></a></div>
+                        </div>
+                        <!--Block-->
+                        <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-7.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-8.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-9.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-10.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-6.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-7.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-8.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-9.png" alt=""></a></div>
+                        </div> 
+                        <!--Block-->
+                         <div class="client-block">
+                            <div class="image"><a href="#"><img src="images/resource/client-10.png" alt=""></a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!--News Section-->
+        <!-- <section class="news-two">
+            <div class="auto-container">
+                <div class="title-box centered">
+                    <div class="subtitle">Blog</div>
+                    <h2><span>Latest News</span></h2>
+                </div>
+                <div class="news-box">
+                    <div class="bg-grad-left"><img src="images/background/bg-gradient-21.png" alt="" title=""></div>
+                    <div class="bg-grad-right"><img src="images/background/bg-gradient-22.png" alt="" title=""></div>
+                    <div class="row clearfix">
+
+                        <div class="news-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="0ms">
+                            <div class="inner-box">
+                                <div class="image-box"><a href="blog-single-2.html"><img src="images/resource/news-5.jpg" alt=""></a></div>
+                                <div class="lower-box">
+                                    <ul class="info clearfix">
+                                        <li><a href="#"><i class="fa fa-folder"></i> Adventure</a></li>
+                                        <li><a href="#"><i class="fa fa-clock"></i> June 17, 2022</a></li>
+                                        <li><a href="#"><i class="fa fa-comments"></i> 22</a></li>
+                                    </ul>
+                                    <h4><a href="blog-single.html">Jim Morrison says when the musics over turn off the light</a></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="news-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="300ms">
+                            <div class="inner-box">
+                                <div class="image-box"><a href="blog-single-2.html"><img src="images/resource/news-6.jpg" alt=""></a></div>
+                                <div class="lower-box">
+                                    <ul class="info clearfix">
+                                        <li><a href="#"><i class="fa fa-folder"></i> Adventure</a></li>
+                                        <li><a href="#"><i class="fa fa-clock"></i> June 17, 2022</a></li>
+                                        <li><a href="#"><i class="fa fa-comments"></i> 22</a></li>
+                                    </ul>
+                                    <h4><a href="blog-single.html">Jim Morrison says when the musics over turn off the light</a></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="news-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-duration="1500ms" data-wow-delay="600ms">
+                            <div class="inner-box">
+                                <div class="image-box"><a href="blog-single-2.html"><img src="images/resource/news-7.jpg" alt=""></a></div>
+                                <div class="lower-box">
+                                    <ul class="info clearfix">
+                                        <li><a href="#"><i class="fa fa-folder"></i> Adventure</a></li>
+                                        <li><a href="#"><i class="fa fa-clock"></i> June 17, 2022</a></li>
+                                        <li><a href="#"><i class="fa fa-comments"></i> 22</a></li>
+                                    </ul>
+                                    <h4><a href="blog-single.html">Jim Morrison says when the musics over turn off the light</a></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <!--Insta Feed Section-->
+        <section class="insta-section-two" style="margin-bottom: 250px;">
+            <!--Feed Row-->
+            <div class="insta-feed">
+                <div class="carousel-box">
+                    <div class="insta-title">
+                        <h5>Follow Us <br>on Instagram</h5>
+                        <div class="insta-user"><a href="#">@HolidayWaale</a></div>
+                    </div> 
+                    <div class="insta-carousel-two">
+                        <!--Block-->
+                        <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-13.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-13.jpg" alt=""></a></span>
+                            </div>
+                        </div>
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-14.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-14.jpg" alt=""></a></span>
+                            </div>
+                        </div>
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-15.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-15.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-16.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-16.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-17.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-17.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-18.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-18.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-13.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-13.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-14.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-14.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                        <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-15.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-15.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-16.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-16.jpg" alt=""></a></span>
+                            </div>
+                        </div>
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-17.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-17.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                        <!--Block-->
+                         <div class="insta-block">
+                            <div class="image">
+                                <span class="img"><a href="images/resource/insta-18.jpg" class="lightbox-image" data-fancybox="insta-gallery"><img src="images/resource/insta-18.jpg" alt=""></a></span>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Main Footer-->
+      <!-- footer 2 -->
+ <div class="bg-gray-800" style="height: 500px;">
+    <footer class="bg-white  shadow-lg mx-auto p-8 mt-8 max-w-6xl" style="position: absolute; right: 100px; bottom: 300px; border: 1px solid #e0e0e054; border-radius: 20px; height: 370px; box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.14); box-sizing: border-box;">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+         <div style="border-right: 1px solid brown;">
+          <p class="font-semibold mb-4 footer-heading" style="">
+           ABOUT HOLIDAYWAALE
+          </p>
+          <ul>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#" style="">
+             ABOUT US
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             WE ARE HIRING
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             HolidayWaale REVIEWS
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             TERMS &amp; CONDITIONS
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             PRIVACY POLICIES
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             COPYRIGHT POLICIES
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             SUPPORT
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-red-600 footer-list" href="#">
+             BEWARE OF FRAUDS
+             <i class="fas fa-exclamation-triangle">
+             </i>
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div style="border-right: 1px solid brown;">
+          <h3 class="font-semibold mb-4 footer-heading">
+           FOR SUPPLIERS
+          </h3>
+          <ul>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             LIST YOUR ACTIVITIES
+            </a>
+           </li>
+          </ul>
+          <h3 class="font-semibold mt-6 mb-4 footer-heading">
+           FOR BRANDS
+          </h3>
+          <ul>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             PARTNER WITH US
+            </a>
+           </li>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             DESTINATION MARKETING
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div style="border-right: 1px solid brown;">
+          <h3 class="font-semibold mb-4 footer-heading">
+           FOR TRAVELLERS
+          </h3>
+          <ul>
+           <li class="mb-2">
+            <a class="text-gray-600 footer-list" href="#">
+             GIFT AN EXPERIENCE
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div>
+          <h3 class="font-semibold mb-4">
+           TRAVEL DESTINATIONS
+          </h3>
+          <div class="grid grid-cols-3 gap-2">
+           <div>
+            <img alt="Bali" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/bQZ9kqhsQVLtP5RDXU4SbBqB5IFRAmRLhf7KQJeEsWmLLB9TA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Dubai" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/TX643y4A9uKyKxjgyyrzseSwzaEp89RwimuQeAfDEa1SWC6nA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Singapore" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/YNaC75OiVQ5AG9vOy5J77PRN6R70Upr9w9wfFu6SXigilgeTA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Thailand" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/hZ8RO85HATanFJGev6B1MVES4owXYXn37Q6etv4w08p6KB9TA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Andaman" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/R0zGm2wgooKBEpOghuVeM2VF6Wp3Wbw7GSfmZ4H8iILDLB9TA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="India" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/fRfskaErwWmIxUlGQHulZ3qMpxSQcY8ffdz5LY7lenK4YJofE.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Ladakh" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/stAMSWs7JcboJhhO6dB3UleZfnyDYfTnovhSntryvqGEWC6nA.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Hong Kong" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/qL28cBIfW6we4EcGFhQg0sz6QWeLx5eHSLgApoiahz65rE0PB.jpg" width="100"/>
+           </div>
+           <div>
+            <img alt="Sri Lanka" class="rounded-lg" height="100" src="https://storage.googleapis.com/a1aa/image/A8ZpCeoLdekfMoi5tfOJzqgdBStsMc8BTUcBK60iIdkfXJofE.jpg" width="100"/>
+           </div>
+          </div>
+         </div>
+        </div>
+    </footer>   
+       <div class=" py-6" style="padding-top: 200px;">
+        <div class="max-w-6xl mx-auto text-center">
+         <img alt="HolidayWaale Logo" class="mx-auto mb-4" height="100" src="/travel/images/logo.png" width="100"/>
+       <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="line-1" style="width: 500px; height: 2px; background-color: black; color: #fd7e14;"></div>
+            <p style="color: #fd7e14; font-size: 25px; font-weight: bold;">Holidaywalle.com</p>
+        <div class="line-2" style="width: 500px; height: 2px; background-color: black;"></div>
+       </div>
+         
+    
+         <div class="flex justify-center space-x-4 mb-4">
+          <a class="text-white" href="#">
+           <i class="fab fa-facebook-f">
+           </i>
+          </a>
+          <a class="text-white" href="#">
+           <i class="fab fa-instagram">
+           </i>
+          </a>
+          <a class="text-white" href="#">
+           <i class="fab fa-twitter">
+           </i>
+          </a>
+          <a class="text-white" href="#">
+           <i class="fab fa-linkedin-in">
+           </i>
+          </a>
+          <a class="text-white" href="#">
+           <i class="fab fa-youtube">
+           </i>
+          </a>
+         </div>
+         <p class="text-gray-500 text-sm">
+          © 2024 HolidayWaale.com All rights reserved.
+         </p>
+         <p class="text-gray-500 text-xs mt-2">
+          The content and images used on this site are copyright protected and copyrights vests with the respective owners. The usage of the content and images on this website is intended to promote the works and no endorsement of the artist shall be implied. Unauthorized use is prohibited and punishable by law.
+         </p>
+        </div>
+       </div>
+    
+    </div>
+    
+
+    </div>
+
+    <div class="bg-gray-100 flex items-center justify-center min-h-screen" >
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md "  style="" id="">
+            <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white text-center py-2 rounded-t-lg flex justify-between items-center px-4">
+             <span>
+              Christmas Sale is LIVE
+             </span>
+             <span>
+              Ends in 4d : 19h : 53m
+             </span>
+             <i class="fas fa-times cursor-pointer">
+             </i>
+            </div>
+            <div class="p-4">
+             <div class="flex items-center mb-4">
+              <img alt="Tarsar Marsar Trek, Jammu And Kashmir" class="w-12 h-12 rounded-md mr-4" height="50" src="https://storage.googleapis.com/a1aa/image/48hV3luceHTbYiwQf90DHNRfeFkBcekciXABdJCzPy8E1fsfJA.jpg" width="50"/>
+              <div>
+               <h2 class="text-lg font-semibold">
+                Tarsar Marsar Trek, Jammu And Kashmir
+               </h2>
+               <div class="text-xl font-bold text-green-600">
+                INR 16,499
+                <span class="text-gray-500 line-through text-sm">
+                 INR 21,112
+                </span>
+                <span class="text-green-600 text-sm">
+                 SAVE INR 4,613
+                </span>
+               </div>
+              </div>
+             </div>
+             <form class="space-y-4">
+              <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Full Name*" type="text"/>
+              <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Email*" type="email"/>
+              <div class="flex space-x-2">
+               <input class="w-1/4 p-2 border border-gray-300 rounded-md" placeholder="+91" type="text"/>
+               <input class="w-3/4 p-2 border border-gray-300 rounded-md" placeholder="Your Phone*" type="text"/>
+              </div>
+              <div class="flex space-x-2">
+               <input class="w-1/2 p-2 border border-gray-300 rounded-md" placeholder="Travel Date*" type="text"/>
+               <input class="w-1/2 p-2 border border-gray-300 rounded-md" placeholder="Traveller Count*" type="text"/>
+              </div>
+              <textarea class="w-full p-2 border border-gray-300 rounded-md" placeholder="Message..."></textarea>
+              <button class="w-full bg-orange-500 text-white py-2 rounded-md font-semibold" type="submit">
+               Connect with an Expert
+              </button>
+             </form>
+            </div>
+           </div>
+          
+    </div>
+    <!--End pagewrapper-->
+
+
+
+
+    <!--Scroll to top-->
+    <!-- <div class="scroll-to-top scroll-to-target" data-target="html"><span class="icon"><img src="images/icons/arrow-up.svg" alt="" title="Go To Top"></span></div> -->
+
+    <script>
+        let mainpage =   document.getElementById('#main-page');
+     let formpage =   document.getElementById('#form-page');
+
+     const openForm = () => {
+      // form.classList.back
+      formpage.classList.add("active");
+    //   mainpage.classList.remove("active");
+
+      // form2.classList.add("active");
+      // overlay.classList.add("overlayactive");
+
+    }
+
+    </script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="js/jquery.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/popper.min.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/jquery-ui.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/jquery.fancybox.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/isotope.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/slick.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/swiper.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/appear.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/wow.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+    <script src="js/custom-script.js" type="c71f5032a96918a83179673b-text/javascript"></script>
+   <script src="js/rocket-loader.min.js" data-cf-settings="c71f5032a96918a83179673b-|49" defer></script>
+    <!-- <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="c71f5032a96918a83179673b-|49" defer></script> -->
+</body>
+
+</html>
